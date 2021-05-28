@@ -31,11 +31,55 @@ def show_menu():
     return option
 
 
-def maain_loop():
+def get_record():   
+    print("")
+    first = input("Enter First Name >> ")
+    last = input("Enter Last Name >> ")
+
+    try:
+        doc = coll.find_one({ "first": first.lower(), "last": last.lower()})
+    except:
+        print("Error accessing the database")
+
+    if not doc:
+        print("")
+        print("Error! no results")
+    return doc
+
+def add_record():
+    print("")
+    first = input("Enter First Name >> ")
+    last = input("Enter Last Name >> ")
+    dob = input("Enter DOB >> ")
+    gender = input("Enter Gender >> ")
+    hair_colour = input("Enter Hair Colour >> ")
+    occupation = input("Enter Occupation >> ")
+    nationality = input("Enter Nationality >> ")
+
+    # dictionary which will insert into DB
+    new_doc = {
+        "first": first.lower(),
+        "last": last.lower(),
+        "dob": dob,
+        "gender": gender,
+        "hair_colour": hair_colour,
+        "occupation": occupation,
+        "nationality": nationality
+    }
+    
+    try:
+        coll.insert(new_doc)
+        print("")
+        print("Document inserted")
+    except:
+        print("Error accessing the database")
+
+
+def main_loop():
     while True:
         option = show_menu()
         if option == "1":
-            print("You have selected option 1")
+            add_record()
         elif option == "2":
             print("You have selected option 2")
         elif option == "3":
@@ -49,7 +93,9 @@ def maain_loop():
             print("Invalid option")
         print("")
 
-
+# That will call our Mongo connection, and create our Mongo celebrities collection.
 conn = mongo_connect(MONGO_URI)
 coll = conn[DATABASE][COLLECTION]
-maain_loop()
+# call main_loop() function, which will continue
+# to display menu and process the options.
+main_loop()
