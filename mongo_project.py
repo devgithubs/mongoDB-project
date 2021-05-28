@@ -46,6 +46,16 @@ def get_record():
         print("Error! no results")
     return doc
 
+
+def find_record():
+    doc = get_record()
+    if doc:
+        print("")
+        for k,v in doc.items():
+            if k != "_id":
+                print(k.capitalize() + ": " + v.capitalize())
+
+
 def add_record():
     print("")
     first = input("Enter First Name >> ")
@@ -81,7 +91,7 @@ def main_loop():
         if option == "1":
             add_record()
         elif option == "2":
-            print("You have selected option 2")
+            find_record()
         elif option == "3":
             print("You have selected option 3")
         elif option == "4":
